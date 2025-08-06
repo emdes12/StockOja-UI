@@ -1,13 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="">
   <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite App</title>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StockOja</title>
   </head>
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
   </body>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // TESTING START
+      const elem = document.documentElement
+
+      function openFullscreen() {
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen()
+        } else if (elem.webkitRequestFullscreen) {
+          // Safari
+          elem.webkitRequestFullscreen()
+        } else if (elem.msRequestFullscreen) {
+          // IE11
+          elem.msRequestFullscreen()
+        }
+      }
+      // Some browsers require a user gesture (click, etc.) to enter fullscreen.
+      // Try to trigger it if allowed
+      // openFullscreen()
+      // document.getElementById('body').addEventListener('click', openFullscreen)
+      // TESTING END
+    })
+  </script>
 </html>

@@ -10,3 +10,7 @@ export const useCounterStore = defineStore('counter', () => {
 
   return { count, doubleCount, increment }
 })
+
+export const productList = defineStore('products', () => {
+  const products = ref([])
+})

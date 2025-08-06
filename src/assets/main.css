@@ -1,5 +1,105 @@
 @import './base.css';
 
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: var(--vt-c-black);
+}
+
+input[type='text'],
+input[type='number'],
+input,
+textarea,
+select {
+  width: calc(100%); /* Adjust for padding */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box; /* Include padding in width */
+  background-color: inherit;
+  color: var(--vt-c-black);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+  background-color: inherit;
+  color: var(--vt-c-black);
+}
+
+select {
+  appearance: none; /* Remove default browser styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23333333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 18px;
+  cursor: pointer;
+  background-color: inherit;
+  color: var(--vt-c-black);
+}
+
+span.action {
+  border: 1px solid var(--vt-c-divider-dark-2);
+  background-color: var(--vt-c-text-dark-3);
+  padding: 1px 6px;
+  font-size: 0.8rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.good {
+  color: green;
+  background-color: rgb(225, 253, 225);
+  padding: 1px 6px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+}
+
+.warning {
+  color: #daa520;
+  background-color: #fff5bb;
+  padding: 1px 6px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+}
+
+.danger {
+  color: #b70606;
+  background-color: #ffc0c0;
+  padding: 1px 6px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+}
+
+h2 {
+  color: var(--vt-c-black);
+}
+
+.bold,
+.bold p,
+.bold div,
+.bold span {
+  font-weight: 800;
+}
+
+.quantity-set {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantity-unit {
+  border: 1px solid var(--vt-c-divider-dark-2);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+/* 
 #app {
   max-width: 1280px;
   margin: 0 auto;
@@ -32,4 +132,8 @@ a,
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
+} */
+
+.flex {
+  display: flex;
 }
