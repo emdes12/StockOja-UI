@@ -11,6 +11,7 @@ const all_history = useAllHistory()
 const stored_user = useUserManagement()
 const general_history = ref([])
 
+// formating date
 const formatDate = (date) => {
   const new_date = new Date(date)
 
@@ -115,7 +116,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <DashboardView page-title="History" :user="user">
+  <DashboardView page-title="Activity Log" :user="user">
     <!-- Product List Table -->
     <div class="products-container" v-if="general_history.length">
       <h2>General History</h2>

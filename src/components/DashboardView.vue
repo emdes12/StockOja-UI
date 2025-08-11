@@ -103,7 +103,7 @@ onBeforeUnmount(() => {
       <!-- Header -->
       <header class="header">
         <div class="header-left">
-          <h1 class="logo">SoPeluApp</h1>
+          <!-- <h1 class="logo">SoPeluApp</h1> -->
           <!-- <div class="logo">
             <img src="@/assets/logo.svg" alt="Company Logo" />
           </div> -->

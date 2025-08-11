@@ -31,6 +31,7 @@ const purchasedCart = ref({
   tax: 0,
   discount: 0,
   total: 0,
+  profit: 0,
 })
 
 const businessData = ref({})
@@ -77,10 +78,10 @@ const filterProd = () => {
 }
 
 // create ID
-const createID = () => {
+const createID = (num = 20) => {
   const idVars = '1234567890abcdefghijklmnopqrstuvwxyz'
   let ids = ''
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < num; i++) {
     const element = Math.floor(Math.random() * idVars.length)
     ids += idVars[element]
   }
@@ -104,7 +105,7 @@ const handleCheckout = (e) => {
     store.editProduct(soldProd[0])
   })
 
-  const basket = { id: createID, ...purchasedCart.value }
+  const basket = { id: createID(7), date: new Date(), ...purchasedCart.value }
 
   salesHistory.addCart(basket)
 
@@ -124,7 +125,10 @@ const handleCheckout = (e) => {
     sub_total: 0,
     tax: 0,
     total: 0,
+    profit: 0,
   }
+
+  console.table(basket)
   // showForm()
 
   // Reset form after submission (optional)
@@ -132,18 +136,6 @@ const handleCheckout = (e) => {
 
 // Format Number to Currency
 function formatCurrency(dig) {
-  //   if (isNaN(dig)) return console.log('invalid number')
-
-  //   // seperate decimals from integer
-  //   const [integer, decimal] = dig.toString().split('.')
-
-  //   let result = ''
-  //   for (let j = 0; j < integer.length; j++) {
-  //     if (j > 0 && j % 3 === 0) {
-  //       result = ',' + result
-  //     }
-  //     result = integer[integer.length - 1 - j] + result
-  //   }
   return Number(dig)
     .toFixed(2)
     .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
@@ -160,8 +152,10 @@ const addToCart = (id) => {
     prod_name: prod.prod_name,
     present_quantity: prod.quantity_in_stock,
     selling_price: prod.selling_price,
+    purchase_price: prod.purchase_price,
     units: 1,
     cart_price: prod.selling_price,
+    bought_price: prod.purchase_price,
   }
 
   const findCartProd = purchasedCart.value.cartLists.find((prod) => prod.id === id)
@@ -193,6 +187,7 @@ const increaseQuantity = (id) => {
       }
       prod.units++
       prod.cart_price = prod.units * prod.selling_price
+      prod.bought_price = prod.purchase_price * prod.units
       return
     }
 
@@ -213,6 +208,7 @@ const decreaseQuantity = (id) => {
       } else {
         prod.units -= 1
         prod.cart_price = prod.units * prod.selling_price
+        prod.bought_price = prod.purchase_price * prod.units
       }
       return prod
     }
@@ -225,15 +221,19 @@ const decreaseQuantity = (id) => {
 
 function updateCartPrices() {
   let subtotal = 0
+  let profit_without_discount = 0
   purchasedCart.value.cartLists.forEach((item) => {
     item.cart_price = item.units * item.selling_price
+    item.bought_price = item.purchase_price * item.units
     subtotal += item.cart_price
+    profit_without_discount += item.bought_price
   })
 
   purchasedCart.value.sub_total = subtotal //SUB TOTAL
   purchasedCart.value.discount = subtotal * businessData.value.discount_rate // DISCOUNT
   purchasedCart.value.tax = (subtotal - purchasedCart.value.discount) * businessData.value.tax_rate // TAX
   purchasedCart.value.total = subtotal - purchasedCart.value.discount + purchasedCart.value.tax // TOTAL PAYMENT
+  purchasedCart.value.profit = purchasedCart.value.total - profit_without_discount
 }
 
 function clearCartList() {
@@ -265,15 +265,12 @@ onMounted(() => {
   businessData.value = {
     ...stored_settings.settings[0],
   }
-  console.table(businessData.value)
   businessData.value['tax_rate'] = businessData.value.preference.tax.is_available
     ? businessData.value.preference.tax.rate / 100
     : 0
   businessData.value['discount_rate'] = businessData.value.preference.discount.is_available
     ? businessData.value.preference.discount.rate / 100
     : 0
-
-  console.log(businessData.value)
 
   isLoaded.value = true
 

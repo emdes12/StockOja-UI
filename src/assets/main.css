@@ -1,5 +1,9 @@
 @import './base.css';
 
+*::-webkit-scrollbar {
+  display: none;
+}
+
 label {
   display: block;
   margin-bottom: 5px;

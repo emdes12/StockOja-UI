@@ -6,8 +6,10 @@ import NotificationBar from '@/components/NotificationBar.vue'
 import { useStoreManagement } from '@/stores/storeManagement'
 import { useAllHistory } from '@/stores/allHistory'
 import { useUserManagement } from '@/stores/userManagement'
+import { useProdHistory } from '@/stores/productHistory'
 
 const store = useStoreManagement()
+const prod_history = useProdHistory()
 const stored_user = useUserManagement()
 const all_history = useAllHistory()
 const user = ref({})
@@ -261,10 +263,10 @@ const handleMainCategoryChange = () => {
 }
 
 // create ID
-const createID = () => {
+const createID = (num = 20) => {
   const idVars = '1234567890abcdefghijklmnopqrstuvwxyz'
   let ids = ''
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < num; i++) {
     const element = Math.floor(Math.random() * idVars.length)
     ids += idVars[element]
   }
@@ -315,6 +317,16 @@ const handleSubmit = (e) => {
     image_name: productData.value.selectedFile,
   }
   store.addProduct(newStock)
+
+  const prodHist = {
+    date: new Date(),
+    prod_name: newStock.prod_name,
+    quantity_added: newStock.quantity_in_stock,
+    cost: newStock.purchase_price ? newStock.quantity_in_stock * newStock.purchase_price : 0,
+  }
+
+  prod_history.addprodHistory(prodHist)
+  console.table(prodHist)
 
   all_history.addHistory({
     id: createID(),
@@ -538,6 +550,8 @@ onMounted(() => {
   store.loadProducts()
   productList.value = [...store.productList]
   productCopy.value = [...store.productList]
+
+  prod_history.loadHistory()
 })
 </script>
 
@@ -548,7 +562,7 @@ onMounted(() => {
       <div class="search">
         <input autocomplete="off" type="search" v-model="searchValue" @input="filterProd" />
       </div>
-      <BtnPry v-if="user.user_permission !== 'staff'" :action="showForm" txt="+ Add Product" />
+      <BtnPry v-if="user.user_permission !== 'staff'" :action="showForm" txt="Add Product" />
     </div>
 
     <!-- Product List Table -->
@@ -875,7 +889,10 @@ onMounted(() => {
 }
 
 .products-container {
-  padding-top: 10px;
+  margin-top: 10px;
+  border: 1px solid var(--vt-c-divider-dark-2);
+  overflow-y: auto;
+  border-radius: var(--border-radius);
 }
 
 ul.product-list {
@@ -895,6 +912,7 @@ ul.product-list {
 
 .product-head {
   border-bottom: 1px solid var(--vt-c-divider-dark-2);
+  background-color: #cccccc66;
 }
 
 .product-head,
@@ -903,7 +921,8 @@ ul.product-list {
   gap: 10px;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 0;
+  padding: 10px 1.2rem;
+  width: min-content;
 }
 
 .product-list > li:not(:last-child) {
